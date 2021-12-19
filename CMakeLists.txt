@@ -3,7 +3,7 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-project ("AdventOfCode2021_cmake")
+project ("AdventOfCode2021")
 
 # Incluya los subproyectos.
-add_subdirectory ("AdventOfCode2021_cmake")
+add_subdirectory ("src")

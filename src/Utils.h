@@ -24,6 +24,13 @@ typedef struct puzzle_4_data_s {
 	int already_won;
 }puzzle_4_data_t;
 
+typedef struct puzzle_5_data_s {
+    int x0;
+    int y0;
+    int x1;
+    int y1;
+}puzzle_5_data_t;
+
 extern char *read_file(const char* path, const char* filename, int* num_lines);
 extern int *parse_buffer_numbers(const char *buffer, size_t size);
 extern char** parse_buffer_strings(const char* buffer, size_t num_lines);
@@ -47,5 +54,11 @@ extern void calculate_oxygen_co2_rating(char** diagnosis_values, size_t num_line
 extern puzzle_4_data_t* get_boards_from_string(const char* boards_lines, int* rows, int* cols, int* num_boards);
 extern void get_winner_board(int* bingo_numbers, int num_bingo_numbers, puzzle_4_data_t* boards_info, int num_boards_info);
 extern void get_loser_board(int* bingo_numbers, int num_bingo_numbers, puzzle_4_data_t* boards_info, int num_boards_info);
+
+//PUZZLE 5
+extern puzzle_5_data_t* get_hydrothermal_coordinates_from_string(char ** values_lines, int num_lines, int *rows, int *cols);
+extern void draw_thermal_map(puzzle_5_data_t* thermal_info, int num_values, int rows, int cols, int diagonals_off);
+
+
 
 #endif // _UTILS_H

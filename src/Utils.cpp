@@ -22,7 +22,7 @@ char *read_file(const char* path, const char* filename, int *num_lines) {
 		return NULL;
 	}
 
-	sprintf(filepath, "%s\\", path);
+	sprintf(filepath, "%s/", path);
 	strcat(filepath, filename);
 
 	fp = fopen(filepath, "r");
@@ -70,12 +70,12 @@ int *parse_buffer_numbers(const char* buffer, size_t num_lines) {
 	char *p = (char*)buffer, *c = NULL;
 	int idx = 0;
 
-	c = strtok_s(p, "\n", &p);
+	c = strtok_r(p, "\n", &p);
 
 	while (c) {
 		numbers_buffer[idx] = atoi(c);
 		idx++;
-		c = strtok_s(p, "\n", &p);
+		c = strtok_r(p, "\n", &p);
 	}
 
 
@@ -86,16 +86,16 @@ char** parse_buffer_strings(const char* buffer, size_t num_lines) {
 
 	char** strings_buffer = (char**)calloc(num_lines, sizeof(char*));
 
-	char* p_buf = _strdup(buffer);
+	char* p_buf = strdup(buffer);
 	char* p = (char*)p_buf, * c = NULL;
 	int idx = 0;
 
-	c = strtok_s(p, "\n", &p);
+	c = strtok_r(p, "\n", &p);
 
 	while (c) {
-		strings_buffer[idx] = _strdup(c);
+		strings_buffer[idx] = strdup(c);
 		idx++;
-		c = strtok_s(p, "\n", &p);
+		c = strtok_r(p, "\n", &p);
 	}
 
 	free(p_buf);
@@ -105,7 +105,7 @@ char** parse_buffer_strings(const char* buffer, size_t num_lines) {
 
 int* parse_line_csv_numbers(const char* buffer, int *num_numbers) {
 
-	char* p_buf = _strdup(buffer);
+	char* p_buf = strdup(buffer);
 	(*num_numbers) = 0;
 
 	int num_commas = 0;
@@ -119,13 +119,13 @@ int* parse_line_csv_numbers(const char* buffer, int *num_numbers) {
 	char* p = (char*)p_buf, * c = NULL;
 	int idx = 0;
 
-	c = strtok_s(p, ",", &p);
+	c = strtok_r(p, ",", &p);
 
 	while (c) {
 		numbers_buffer[idx] = atoi(c);
 		(*num_numbers)++;
 		idx++;
-		c = strtok_s(p, ",", &p);
+		c = strtok_r(p, ",", &p);
 	}
 
 	free(p_buf);
@@ -135,7 +135,7 @@ int* parse_line_csv_numbers(const char* buffer, int *num_numbers) {
 
 int** parse_matrix_numbers(const char* buffer, int *rows, int *cols, int *num_chars_matrix) {
 
-	char* p_buf = _strdup(buffer);
+	char* p_buf = strdup(buffer);
 	(*rows) = 0;
 	(*cols) = 0;
 	(*num_chars_matrix) = 0;
@@ -163,14 +163,14 @@ int** parse_matrix_numbers(const char* buffer, int *rows, int *cols, int *num_ch
 	int idx_row = 0, idx_col = 0;
 
 	for (idx_row = 0; idx_row < num_blanks + 1; idx_row++) {
-		c = strtok_s(p, "\n", &p);
+		c = strtok_r(p, "\n", &p);
 		(*num_chars_matrix) += strlen(c) + 1;
 
 		for (idx_col = 0; idx_col < num_blanks; idx_col++) {
-			c_in = strtok_s(c, " ", &c);
+			c_in = strtok_r(c, " ", &c);
 			numbers_buffer[idx_row][idx_col] = atoi(c_in);
 		}
-		c_in = strtok_s(c, "\n", &c);
+		c_in = strtok_r(c, "\n", &c);
 		numbers_buffer[idx_row][num_blanks] = atoi(c_in);
 
 	}
@@ -205,7 +205,6 @@ void how_many_increase_values_are(int* buffer, size_t size, int *increases, int 
 	}
 
 }
-
 void how_many_increase_values_are_by_window(int* buffer, size_t size, int window_size, int* increases, int* decreases, int* not_variant) {
 
 	(*increases) = 0;
@@ -246,16 +245,16 @@ puzzle_2_data_t* parse_buffer_puzzle_2_data(const char* buffer, size_t num_lines
 	char* p = (char*)buffer, * c = NULL, *sub_c = NULL;
 	int idx = 0, ret = -1;
 
-	c = strtok_s(p, "\n", &p);
+	c = strtok_r(p, "\n", &p);
 
 	while (c) {
-		sub_c = strtok_s(c, " ", &c);
-		struct_buffer[idx].action = _strdup(sub_c);
+		sub_c = strtok_r(c, " ", &c);
+		struct_buffer[idx].action = strdup(sub_c);
 
-		sub_c = strtok_s(c, "\n", &c);
+		sub_c = strtok_r(c, "\n", &c);
 		struct_buffer[idx].value = atoi(sub_c);
 		idx++;
-		c = strtok_s(p, "\n", &p);
+		c = strtok_r(p, "\n", &p);
 	}
 
 	ret = 0;
@@ -504,7 +503,7 @@ void calculate_oxygen_co2_rating(char** diagnosis_values, size_t num_lines, uint
 //PUZZLE 4
 puzzle_4_data_t* get_boards_from_string(const char* boards_lines, int* rows, int* cols, int *num_boards) {
 	
-	char* p_buf = _strdup(boards_lines);
+	char* p_buf = strdup(boards_lines);
 	(*num_boards) = 0;
 	(*rows) = 0;
 	(*cols) = 0;
@@ -567,7 +566,6 @@ int has_marked_row(puzzle_4_data_t board) {
 
 	return 0;
 }
-
 int has_marked_col(puzzle_4_data_t board) {
 	for (int idx_col = 0; idx_col < board.cols; idx_col++) {
 		int marked_elements = 0;
@@ -590,7 +588,6 @@ int has_marked_col(puzzle_4_data_t board) {
 
 	return 0;
 }
-
 void calculate_score(puzzle_4_data_t board, int actual_value) {
 	int res = 0, sum = 0;
 	for (int idx_row = 0; idx_row < board.rows; idx_row++) {
@@ -605,7 +602,6 @@ void calculate_score(puzzle_4_data_t board, int actual_value) {
 	printf("SCORE: unmarked-sum(%d) last_number(%d) product(%d)\n", sum, actual_value, res);
 
 }
-
 void get_winner_board(int* bingo_numbers, int num_bingo_numbers, puzzle_4_data_t* boards_info, int num_boards_info) {
 
 	int found_winner = 0;
@@ -660,7 +656,6 @@ void get_winner_board(int* bingo_numbers, int num_bingo_numbers, puzzle_4_data_t
 		}
 	}
 }
-
 void get_loser_board(int* bingo_numbers, int num_bingo_numbers, puzzle_4_data_t* boards_info, int num_boards_info) {
 
 	int idx_last_board = 0, idx_last_number = 0;
@@ -731,4 +726,152 @@ void get_loser_board(int* bingo_numbers, int num_bingo_numbers, puzzle_4_data_t*
 	printf("Last winner board is board number %d with %d numbers in bingo --> Last number (%d)\n", idx_last_board + 1, idx_last_number + 1, bingo_numbers[idx_last_number]);
 	calculate_score(boards_info[idx_last_board], bingo_numbers[idx_last_number]);
 	
+}
+
+//PUZZLE 5
+puzzle_5_data_t* get_hydrothermal_coordinates_from_string(char ** values_lines, int num_lines, int *rows, int *cols){
+
+    (*rows) = 0;
+    (*cols) = 0;
+
+    puzzle_5_data_t* hydrothermal_info = (puzzle_5_data_t*)calloc(num_lines, sizeof(puzzle_5_data_t));
+
+
+    for (int idx = 0; idx < num_lines; idx++) {
+        sscanf(values_lines[idx],
+               "%d,%d -> %d,%d",
+               &hydrothermal_info[idx].x0, &hydrothermal_info[idx].y0,
+               &hydrothermal_info[idx].x1, &hydrothermal_info[idx].y1);
+
+        if(hydrothermal_info[idx].x0 > (*cols)){
+            (*cols) = hydrothermal_info[idx].x0;
+        }
+        if(hydrothermal_info[idx].x1 > (*cols)){
+            (*cols) = hydrothermal_info[idx].x1;
+        }
+
+        if(hydrothermal_info[idx].y0 > (*rows)){
+            (*rows) = hydrothermal_info[idx].y0;
+        }
+        if(hydrothermal_info[idx].y1 > (*rows)){
+            (*rows) = hydrothermal_info[idx].y1;
+        }
+
+        puzzle_5_data_t hydro_info = hydrothermal_info[idx];
+
+        int iii = 0;
+    }
+
+    return hydrothermal_info;
+}
+void draw_thermal_map(puzzle_5_data_t* thermal_info, int num_values, int rows, int cols, int diagonals_off){
+
+    int ** thermal_map = (int**)calloc(rows, sizeof (int*));
+    for(int idx = 0; idx < rows; idx++){
+        thermal_map[idx] = (int*)calloc(cols, sizeof (int));
+    }
+
+    for(int idx = 0; idx < num_values; idx++){
+        puzzle_5_data_t data = thermal_info[idx];
+
+        if( diagonals_off == 1 &&
+            data.x0 != data.x1 &&
+            data.y0 != data.y1){
+            continue;
+        }
+
+        int x0 = 0, y0 = 0, x1 = 0, y1 = 0;
+
+        if(data.x0 > data.x1){
+            x0 = data.x1;
+            x1 = data.x0;
+        }
+        else{
+            x0 = data.x0;
+            x1 = data.x1;
+        }
+
+        if(data.y0 > data.y1){
+            y0 = data.y1;
+            y1 = data.y0;
+        }
+        else{
+            y0 = data.y0;
+            y1 = data.y1;
+        }
+
+        int inc_x = data.x1-data.x0;
+        int inc_y = data.y1-data.y0;
+        int inverted_diag = 0;
+        int x = 0;
+
+        if( diagonals_off == 0 && inc_x != 0 && inc_y != 0)  {
+            //45º diagonals only
+
+            if( (inc_x > 0 && inc_y > 0) || ((inc_x < 0 && inc_y < 0))){
+                //Diagonal
+                printf("Diagonal from (%d,%d) to (%d,%d)\n", data.x0, data.y0, data.x1, data.y1);
+
+                x = x0;
+            }
+            else if ( (inc_x > 0 && inc_y < 0) || ((inc_x < 0 && inc_y > 0)))
+            {
+                //Inverted Diagonal
+                printf("Inverted Diagonal from (%d,%d) to (%d,%d)\n", data.x0, data.y0, data.x1, data.y1);
+                x = x1;
+                inverted_diag = 1;
+            }
+
+            for (int y = y0; y <= y1; y++) {
+                if (x > x1 && inverted_diag == 0) {
+                    break;
+                } else if (x < x0 && inverted_diag == 1) {
+                    break;
+                }
+                thermal_map[y][x]++;
+                inverted_diag == 1 ? x-- : x++;
+            }
+        }
+        else {
+            //Vertical & Horizontal lines
+            for (int x = x0; x <= x1; x++) {
+                for (int y = y0; y <= y1; y++) {
+                    thermal_map[y][x]++;
+                }
+            }
+        }
+
+//        printf("-----------------------------------------\n");
+//        printf("%d,%d -> %d,%d\n",data.x0, data.y0, data.x1, data.y1 );
+//        for(int x = 0; x < rows; x++){
+//            for(int y = 0; y < cols; y++){
+//                thermal_map[x][y] != 0 ? printf("%d ", thermal_map[x][y]) : printf(". ");
+//            }
+//            printf("\n");
+//        }
+//        printf("-----------------------------------------\n");
+    }
+
+
+    printf("-----------------------------------------\n");
+    diagonals_off == 1 ?  printf("Disabled diagonals\n") : printf("Enabled diagonals\n");
+    int num_dangerous_points = 0;
+    for(int x = 0; x < rows; x++){
+        for(int y = 0; y < cols; y++){
+            thermal_map[x][y] != 0 ? printf("%d ", thermal_map[x][y]) : printf(". ");
+            if(thermal_map[x][y]>=2){
+                num_dangerous_points++;
+            }
+        }
+        printf("\n");
+    }
+    printf("-----------------------------------------\n");
+    printf("DANGEROUS POINTS: %d\n", num_dangerous_points);
+
+
+
+    for(int idx = 0; idx < rows; idx++){
+        free(thermal_map[idx]);
+    }
+    free(thermal_map);
 }

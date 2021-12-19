@@ -1,7 +1,7 @@
-﻿// AdventOfCode2021_cmake.cpp: define el punto de entrada de la aplicación.
+﻿// AdventOfCode2021.cpp: define el punto de entrada de la aplicación.
 //
 
-#include "AdventOfCode2021_cmake.h"
+#include "AdventOfCode2021.h"
 
 
 
@@ -62,10 +62,10 @@ void puzzle_4() {
     char* input4 = read_file(AOC2021_INPUT_PATH, "input4", &num_lines_input4);
     char** bingo_values = parse_buffer_strings(input4, num_lines_input4);
 
-    char* first_line = strtok_s(input4, "\n", &input4);
+    char* first_line = strtok_r(input4, "\n", &input4);
     char* boards_lines = input4 + 1;
 
-    int num_numbers = 0, rows = 0, cols = 0, num_chars_board = 0, num_boards = 0;
+    int num_numbers = 0, rows = 0, cols = 0, num_boards = 0;
     int* bingo_numbers = parse_line_csv_numbers(first_line, &num_numbers);
     puzzle_4_data_t* boards_info_to_win = get_boards_from_string(boards_lines, &rows, &cols, &num_boards);
     get_winner_board(bingo_numbers, num_numbers, boards_info_to_win, num_boards);
@@ -73,9 +73,6 @@ void puzzle_4() {
     get_loser_board(bingo_numbers, num_numbers, boards_info_to_lose, num_boards);
 
     printf("PUZZLE 4-1 & 4-2 Result: \nROWS: %d \nCOLS: %d \nNUM_BOARDS: %d\n", rows, cols, num_boards);
-
-
-
 
     free(input4);
     for (int idx = 0; idx < num_lines_input4; idx++) {
@@ -91,6 +88,49 @@ void puzzle_4() {
     free(boards);*/
     free(boards_info_to_win);
     free(boards_info_to_lose);
+}
+
+void puzzle_5() {
+    int num_lines_input5 = 0;
+    char* input5 = read_file(AOC2021_INPUT_PATH, "input5", &num_lines_input5);
+    char** termal_lines_values = parse_buffer_strings(input5, num_lines_input5);
+
+    for (int idx = 0; idx < num_lines_input5; idx++) {
+        printf("%s\n",termal_lines_values[idx] );
+    }
+
+    int rows = 0, cols = 0;
+    puzzle_5_data_t* thermal_info = get_hydrothermal_coordinates_from_string(termal_lines_values, num_lines_input5, &rows, &cols);
+    //draw_thermal_map(thermal_info, num_lines_input5, ++rows, ++cols, 1);
+    draw_thermal_map(thermal_info, num_lines_input5, ++rows, ++cols, 0);
+
+//    char* first_line = strtok_r(input4, "\n", &input4);
+//    char* boards_lines = input4 + 1;
+//
+//    int num_numbers = 0, rows = 0, cols = 0, num_boards = 0;
+//    int* bingo_numbers = parse_line_csv_numbers(first_line, &num_numbers);
+//    puzzle_4_data_t* boards_info_to_win = get_boards_from_string(boards_lines, &rows, &cols, &num_boards);
+//    get_winner_board(bingo_numbers, num_numbers, boards_info_to_win, num_boards);
+//    puzzle_4_data_t* boards_info_to_lose = get_boards_from_string(boards_lines, &rows, &cols, &num_boards);
+//    get_loser_board(bingo_numbers, num_numbers, boards_info_to_lose, num_boards);
+//
+//    printf("PUZZLE 4-1 & 4-2 Result: \nROWS: %d \nCOLS: %d \nNUM_BOARDS: %d\n", rows, cols, num_boards);
+
+    free(input5);
+
+//    for (int idx = 0; idx < num_lines_input4; idx++) {
+//        free(bingo_values[idx]);
+//        bingo_values[idx] = NULL;
+//    }
+//    free(bingo_values);
+//    free(bingo_numbers);
+//    /*for (int idx = 0; idx < rows; idx++) {
+//        free(boards[idx]);
+//        boards[idx] = NULL;
+//    }
+//    free(boards);*/
+//    free(boards_info_to_win);
+//    free(boards_info_to_lose);
 }
 
 int main(int argc, char* argv[])
@@ -118,6 +158,9 @@ int main(int argc, char* argv[])
         break;
     case 4:
         puzzle_4();
+        break;
+    case 5:
+        puzzle_5();
         break;
     default:
         break;
