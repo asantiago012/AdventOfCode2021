@@ -2,10 +2,13 @@
 #ifndef _UTILS_H
 #define _UTILS_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cstdint>
+#include <vector>
+
+using namespace std;
 
 typedef struct puzzle_2_data_s {
 	char* action;
@@ -59,6 +62,8 @@ extern void get_loser_board(int* bingo_numbers, int num_bingo_numbers, puzzle_4_
 extern puzzle_5_data_t* get_hydrothermal_coordinates_from_string(char ** values_lines, int num_lines, int *rows, int *cols);
 extern void draw_thermal_map(puzzle_5_data_t* thermal_info, int num_values, int rows, int cols, int diagonals_off);
 
-
+//PUZZLE 6
+extern void calculate_lanternfish_evolution(int *lanternfish_info, int num_initial_lanternfish, int num_days);
+extern void calculate_lanternfish_evolution_states(int *lanternfish_info, int num_initial_lanternfish, int num_days);
 
 #endif // _UTILS_H

@@ -133,6 +133,17 @@ void puzzle_5() {
 //    free(boards_info_to_lose);
 }
 
+void puzzle_6() {
+    int num_lines_input6 = 0;
+    char* input6 = read_file(AOC2021_INPUT_PATH, "input6", &num_lines_input6);
+
+    int num_numbers = 0;
+    int* lanternfish_numbers = parse_line_csv_numbers(input6, &num_numbers);
+    //calculate_lanternfish_evolution(lanternfish_numbers, num_numbers, 80);
+    calculate_lanternfish_evolution_states(lanternfish_numbers, num_numbers, 256);
+
+}
+
 int main(int argc, char* argv[])
 {
     if (argc != 2) {
@@ -161,6 +172,9 @@ int main(int argc, char* argv[])
         break;
     case 5:
         puzzle_5();
+        break;
+    case 6:
+        puzzle_6();
         break;
     default:
         break;

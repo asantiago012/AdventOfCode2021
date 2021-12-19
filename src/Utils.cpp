@@ -875,3 +875,138 @@ void draw_thermal_map(puzzle_5_data_t* thermal_info, int num_values, int rows, i
     }
     free(thermal_map);
 }
+
+//PUZZLE 6
+void calculate_lanternfish_counter(unsigned long int *lanternfish_counter, int *new_fish) {
+    unsigned long int p = *lanternfish_counter;
+
+    if (p == 0) {
+        //New fish
+        (*lanternfish_counter) = 6;
+        (*new_fish)++;
+    } else {
+        (*lanternfish_counter)--;
+    }
+}
+void introduce_new_fishes(vector<unsigned long int> *lanternfish_data, int new_fishes){
+    if(new_fishes == 0){
+        return;
+    }
+
+    while(new_fishes > 0) {
+        (*lanternfish_data).push_back(8);
+        new_fishes--;
+    }
+}
+
+void calculate_lanternfish_evolution_new_day(vector<unsigned long int> *lanternfish_data){
+    int init_day_num_fishes = (*lanternfish_data).size();
+
+    for(int idx = 0; idx < init_day_num_fishes; idx++){
+        int new_fishes = 0;
+        //Actual+10
+        if(idx < init_day_num_fishes - 10){
+            calculate_lanternfish_counter(&(*lanternfish_data).at(idx), &new_fishes);
+            calculate_lanternfish_counter(&(*lanternfish_data).at(++idx), &new_fishes);
+            calculate_lanternfish_counter(&(*lanternfish_data).at(++idx), &new_fishes);
+            calculate_lanternfish_counter(&(*lanternfish_data).at(++idx), &new_fishes);
+            calculate_lanternfish_counter(&(*lanternfish_data).at(++idx), &new_fishes);
+            calculate_lanternfish_counter(&(*lanternfish_data).at(++idx), &new_fishes);
+            calculate_lanternfish_counter(&(*lanternfish_data).at(++idx), &new_fishes);
+            calculate_lanternfish_counter(&(*lanternfish_data).at(++idx), &new_fishes);
+            calculate_lanternfish_counter(&(*lanternfish_data).at(++idx), &new_fishes);
+            calculate_lanternfish_counter(&(*lanternfish_data).at(++idx), &new_fishes);
+
+            introduce_new_fishes(lanternfish_data, new_fishes);
+            continue;
+        }
+
+        //Actual
+        calculate_lanternfish_counter(&(*lanternfish_data).at(idx), &new_fishes);
+        introduce_new_fishes(lanternfish_data, new_fishes);
+
+
+
+    }
+
+//    for(int idx = 0; idx < (*lanternfish_data).size(); idx++){
+//        idx == 0    ? printf("%d", (*lanternfish_data).at(idx))
+//                    : printf(",%d", (*lanternfish_data).at(idx));
+//    }
+}
+void calculate_lanternfish_evolution(int *lanternfish_info, int num_initial_lanternfish, int num_days){
+
+    vector<unsigned long int> lanternfish_data_first_half;
+    vector<unsigned long int> lanternfish_data_second_half;
+
+    for(int idx = 0; idx < num_initial_lanternfish; idx++){
+        if((float)idx < (float)num_initial_lanternfish / 2){
+            lanternfish_data_first_half.push_back(lanternfish_info[idx]);
+        }
+        else{
+            lanternfish_data_second_half.push_back(lanternfish_info[idx]);
+        }
+    }
+
+    printf("Initial state 1st half: ");
+    for(int idx = 0; idx < lanternfish_data_first_half.size(); idx++){
+        idx == 0 ? printf("%lu", lanternfish_data_first_half.at(idx)) : printf(",%lu", lanternfish_data_first_half.at(idx));
+    }
+    printf("\n");
+
+    for(int day = 1; day <= num_days; day++){
+        day == 1 ? printf("After %02d day:  ", day) : printf("After %02d days: ", day);
+        calculate_lanternfish_evolution_new_day(&lanternfish_data_first_half);
+        printf("\n");
+    }
+
+
+    printf("Initial state 2nd half: ");
+    for(int idx = 0; idx < lanternfish_data_second_half.size(); idx++){
+        idx == 0 ? printf("%lu", lanternfish_data_second_half.at(idx)) : printf(",%lu", lanternfish_data_second_half.at(idx));
+    }
+    printf("\n");
+
+    for(int day = 1; day <= num_days; day++){
+        day == 1 ? printf("After %02d day:  ", day) : printf("After %02d days: ", day);
+        calculate_lanternfish_evolution_new_day(&lanternfish_data_second_half);
+        printf("\n");
+    }
+
+    printf("TOTAL LANTERNFISHES FIRST HALF AFTER %d DAYS:  %d\n", num_days, (int)lanternfish_data_first_half.size());
+    printf("TOTAL LANTERNFISHES SECOND HALF AFTER %d DAYS: %d\n", num_days, (int)lanternfish_data_second_half.size());
+
+    printf("AFTER %d DAYS THERE ARE (%d) LANTERNFISHES\n", num_days,  (int)lanternfish_data_first_half.size()+(int)lanternfish_data_second_half.size());
+}
+
+void calculate_lanternfish_evolution_states(int *lanternfish_info, int num_initial_lanternfish, int num_days){
+    unsigned long int states[9] = {0};
+
+    for(int idx = 0; idx < num_initial_lanternfish; idx++){
+        states[lanternfish_info[idx]]++;
+    }
+
+    printf("Initial state: \n");
+    for (int idx_state = 0; idx_state <= 8; idx_state++) {
+        printf("[%d] -> %lu\n", idx_state, states[idx_state]);
+    }
+
+    for(int day = 1; day <= num_days; day++) {
+        unsigned long int new_fishes = states[0];
+        for (int idx_state = 0; idx_state <= 7; idx_state++) {
+            states[idx_state] = states[idx_state+1];
+        }
+        states[6] += new_fishes;
+        states[8] = new_fishes;
+
+//        day == 1 ? printf("After %02d day:  ", day) : printf("After %02d days: ", day);
+//        printf("\n");
+    }
+
+    unsigned long int num_fishes = 0;
+    for (int idx_state = 0; idx_state <= 8; idx_state++) {
+        num_fishes += states[idx_state];
+    }
+    printf("AFTER %d DAYS THERE ARE (%lu) LANTERNFISHES\n", num_days, num_fishes);
+
+}
