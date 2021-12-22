@@ -144,6 +144,17 @@ void puzzle_6() {
 
 }
 
+void puzzle_7() {
+    int num_lines_input7 = 0;
+    char* input7 = read_file(AOC2021_INPUT_PATH, "input7", &num_lines_input7);
+
+    int num_numbers = 0;
+    int* crabs_positions = parse_line_csv_numbers(input7, &num_numbers);
+    calculate_optimal_crabs_position(crabs_positions, num_numbers);
+    calculate_optimal_crabs_position_extra(crabs_positions, num_numbers);
+
+}
+
 int main(int argc, char* argv[])
 {
     if (argc != 2) {
@@ -175,6 +186,9 @@ int main(int argc, char* argv[])
         break;
     case 6:
         puzzle_6();
+        break;
+    case 7:
+        puzzle_7();
         break;
     default:
         break;

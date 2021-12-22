@@ -66,4 +66,8 @@ extern void draw_thermal_map(puzzle_5_data_t* thermal_info, int num_values, int 
 extern void calculate_lanternfish_evolution(int *lanternfish_info, int num_initial_lanternfish, int num_days);
 extern void calculate_lanternfish_evolution_states(int *lanternfish_info, int num_initial_lanternfish, int num_days);
 
+//PUZZLE 7
+extern void calculate_optimal_crabs_position(int *crabs_positions, int num_crabs);
+extern void calculate_optimal_crabs_position_extra(int *crabs_positions, int num_crabs);
+
 #endif // _UTILS_H

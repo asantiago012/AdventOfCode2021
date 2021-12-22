@@ -182,6 +182,17 @@ int** parse_matrix_numbers(const char* buffer, int *rows, int *cols, int *num_ch
 	return numbers_buffer;
 }
 
+int summation_natural_numbers(int from, int to){
+    int sum = 0;
+    int positions = abs(from-to);
+
+    for(int num = 1; num <= positions; num++){
+        sum += num;
+    }
+
+    return sum;
+}
+
 //PUZZLE 1
 void how_many_increase_values_are(int* buffer, size_t size, int *increases, int *decreases, int *not_variant) {
 
@@ -1009,4 +1020,65 @@ void calculate_lanternfish_evolution_states(int *lanternfish_info, int num_initi
     }
     printf("AFTER %d DAYS THERE ARE (%lu) LANTERNFISHES\n", num_days, num_fishes);
 
+}
+
+//PUZZLE 7
+void calculate_optimal_crabs_position(int *crabs_positions, int num_crabs){
+    uint32_t min_position = 0xFFFFFFFF, max_position = 0;
+    int optimal_fuel = 0, optimal_position = 0;
+
+    for(int idx = 0; idx < num_crabs; idx++){
+        if( crabs_positions[idx] < min_position){
+            min_position = crabs_positions[idx];
+        }
+        if( crabs_positions[idx] > max_position){
+            max_position = crabs_positions[idx];
+        }
+        optimal_fuel += crabs_positions[idx];
+    }
+
+
+    for(int position = (int)min_position; position <= (int)max_position; position++){
+        int fuel_required = 0;
+        for(int idx = 0; idx < num_crabs; idx++){
+            fuel_required += abs(crabs_positions[idx]-position);
+        }
+
+        if(fuel_required < optimal_fuel){
+            optimal_fuel = fuel_required;
+            optimal_position = position;
+        }
+    }
+
+    printf("7-1 -> Optimal position (%d) using total fuel (%d)\n", optimal_position, optimal_fuel);
+}
+
+void calculate_optimal_crabs_position_extra(int *crabs_positions, int num_crabs){
+    uint32_t min_position = 0xFFFFFFFF, max_position = 0;
+    int optimal_fuel = (int)0x0FFFFFFF, optimal_position = 0;
+
+    for(int idx = 0; idx < num_crabs; idx++){
+        if( crabs_positions[idx] < min_position){
+            min_position = crabs_positions[idx];
+        }
+        if( crabs_positions[idx] > max_position){
+            max_position = crabs_positions[idx];
+        }
+    }
+
+
+    for(int position = (int)min_position; position <= (int)max_position; position++){
+        int fuel_required = 0, fuel_required_for_crab = 0;
+        for(int idx = 0; idx < num_crabs; idx++){
+            fuel_required_for_crab = summation_natural_numbers(crabs_positions[idx], position);
+            fuel_required += fuel_required_for_crab;
+        }
+
+        if(fuel_required < optimal_fuel){
+            optimal_fuel = fuel_required;
+            optimal_position = position;
+        }
+    }
+
+    printf("7-2 -> Optimal position (%d) using total fuel (%d)\n", optimal_position, optimal_fuel);
 }
